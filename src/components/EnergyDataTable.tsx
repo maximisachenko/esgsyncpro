@@ -4,7 +4,6 @@ import React, { useState, useCallback, useMemo } from 'react';
 import {
   Box,
   Button,
-  Chip,
   Typography,
   Paper,
   Stack,
@@ -13,8 +12,6 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  MenuItem,
-  IconButton,
   Alert,
   Snackbar,
   Badge,
@@ -26,7 +23,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import {
   DataGrid,
   GridColDef,
-  GridRowsProp,
   GridActionsCellItem,
   GridEventListener,
   GridRowId,
@@ -72,11 +68,11 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
   const [deleteRowId, setDeleteRowId] = useState<GridRowId | null>(null);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [showSnackbar, setShowSnackbar] = useState(false);
-  
+
   // New state for tracking unsaved changes
   const [unsavedChanges, setUnsavedChanges] = useState<Record<string, EnergyData>>({});
   const [workingData, setWorkingData] = useState<EnergyData[]>(data);
-  
+
   const [filters, setFilters] = useState({
     minConsumption: '',
     maxConsumption: '',
@@ -134,12 +130,12 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
       const rowToDelete = workingData.find(row => row.id === deleteRowId);
       const newData = workingData.filter(row => row.id !== deleteRowId);
       setWorkingData(newData);
-      
+
       // Remove from unsaved changes if it was there
       const newUnsavedChanges = { ...unsavedChanges };
       delete newUnsavedChanges[deleteRowId.toString()];
       setUnsavedChanges(newUnsavedChanges);
-      
+
       setSnackbarMessage(`Energy record for ${rowToDelete?.date} deleted (unsaved)`);
       setShowSnackbar(true);
     }
@@ -154,15 +150,15 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
 
   const handleCancelClick = (id: GridRowId) => () => {
     setEditingRows(editingRows.filter(rowId => rowId !== id));
-    
+
     // Revert changes for this row
     const originalRow = data.find(row => row.id === id);
     if (originalRow) {
-      const newWorkingData = workingData.map(row => 
+      const newWorkingData = workingData.map(row =>
         row.id === id ? originalRow : row
       );
       setWorkingData(newWorkingData);
-      
+
       // Remove from unsaved changes
       const newUnsavedChanges = { ...unsavedChanges };
       delete newUnsavedChanges[id.toString()];
@@ -179,13 +175,13 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
         return row;
       });
       setWorkingData(updatedData);
-      
+
       // Track this as an unsaved change
       setUnsavedChanges(prev => ({
         ...prev,
-        [newRow.id]: newRow as EnergyData
+        [newRow.id.toString()]: newRow as EnergyData
       }));
-      
+
       setSnackbarMessage('Changes made (unsaved) - click "Save All Changes" to persist');
       setShowSnackbar(true);
       return newRow;
@@ -226,13 +222,13 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
 
     const updatedData = [...workingData, newData];
     setWorkingData(updatedData);
-    
+
     // Track as unsaved change
     setUnsavedChanges(prev => ({
       ...prev,
       [id]: newData
     }));
-    
+
     setShowAddDialog(false);
     setNewRow({
       date: '',
@@ -249,7 +245,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
   const handleExport = (format: string) => {
     const timestamp = new Date().toISOString().split('T')[0];
     const filename = `energy-data-${timestamp}`;
-    
+
     switch (format) {
       case 'csv':
         exportToCSV(filteredData, `${filename}.csv`);
@@ -281,21 +277,21 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
         const importedData = await importFromCSV(file);
         const updatedData = [...workingData, ...importedData];
         setWorkingData(updatedData);
-        
+
         // Track imported data as unsaved changes
         const newUnsavedChanges = { ...unsavedChanges };
         importedData.forEach(row => {
           newUnsavedChanges[row.id] = row;
         });
         setUnsavedChanges(newUnsavedChanges);
-        
+
         setSnackbarMessage(`Successfully imported ${importedData.length} energy records (unsaved)`);
         setShowSnackbar(true);
       } else {
         setSnackbarMessage('Only CSV files are supported for import');
         setShowSnackbar(true);
       }
-    } catch (error) {
+    } catch {
       setSnackbarMessage('Error importing file. Please check the file format.');
       setShowSnackbar(true);
     }
@@ -351,8 +347,8 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
     );
   };
 
-  const getRowClassName = (params: any) => {
-    const isUnsaved = unsavedChanges[params.id];
+  const getRowClassName = (params: { id: GridRowId }) => {
+    const isUnsaved = unsavedChanges[params.id.toString()];
     return isUnsaved ? 'unsaved-row' : '';
   };
 
@@ -465,7 +461,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
               >
                 Add Row
               </Button>
-              
+
               {/* Save/Discard buttons */}
               {hasUnsavedChanges && (
                 <>
@@ -489,7 +485,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                   </Button>
                 </>
               )}
-              
+
               <Button
                 variant="outlined"
                 startIcon={<FilterIcon />}
@@ -524,8 +520,8 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
           {hasUnsavedChanges && (
             <Alert severity="warning" sx={{ mb: 2 }}>
               <Typography variant="body2">
-                You have {Object.keys(unsavedChanges).length} unsaved change(s). 
-                Don't forget to save your changes before leaving the page!
+                You have {Object.keys(unsavedChanges).length} unsaved change(s).
+                Don&apos;t forget to save your changes before leaving the page!
               </Typography>
             </Alert>
           )}
@@ -639,7 +635,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
               <strong>{deleteRowData?.date}</strong>?
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              This action cannot be undone. The record with {deleteRowData?.energyConsumption} kWh consumption 
+              This action cannot be undone. The record with {deleteRowData?.energyConsumption} kWh consumption
               and ${deleteRowData?.energyCost} cost will be permanently removed.
             </Typography>
           </DialogContent>

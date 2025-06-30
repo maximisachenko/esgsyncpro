@@ -8,7 +8,14 @@ import { Builder } from 'xml2js';
 
 declare module 'jspdf' {
   interface jsPDF {
-    autoTable: (options: any) => jsPDF;
+    autoTable: (options: {
+      columns: { title: string; dataKey: string }[];
+      body: EnergyData[];
+      startY: number;
+      styles: { fontSize: number };
+      headStyles: { fillColor: number[] };
+      columnStyles: Record<string, { halign: string }>;
+    }) => jsPDF;
   }
 }
 
@@ -90,9 +97,9 @@ export const importFromCSV = (file: File): Promise<EnergyData[]> => {
   return new Promise((resolve, reject) => {
     Papa.parse(file, {
       header: true,
-      complete: (results) => {
+      complete: (results: Papa.ParseResult<Record<string, string>>) => {
         try {
-          const data = results.data.map((row: any, index: number) => ({
+          const data = results.data.map((row, index: number) => ({
             id: row.id || `imported-${Date.now()}-${index}`,
             date: row.date || '',
             energyConsumption: parseFloat(row.energyConsumption) || 0,

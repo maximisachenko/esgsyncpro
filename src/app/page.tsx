@@ -9,7 +9,6 @@ import {
   Typography,
   Card,
   CardContent,
-  Stack,
   Chip,
 } from '@mui/material';
 import {
@@ -59,8 +58,8 @@ export default function Home() {
   const totalCost = energyData.reduce((sum, item) => sum + item.energyCost, 0);
   const totalSaved = energyData.reduce((sum, item) => sum + item.energySaved, 0);
   const totalMoneySaved = energyData.reduce((sum, item) => sum + item.moneySaved, 0);
-  const averageSavingsPercentage = energyData.length > 0 
-    ? energyData.reduce((sum, item) => sum + item.savingsPercentage, 0) / energyData.length 
+  const averageSavingsPercentage = energyData.length > 0
+    ? energyData.reduce((sum, item) => sum + item.savingsPercentage, 0) / energyData.length
     : 0;
 
   const getSavingsColor = (percentage: number) => {

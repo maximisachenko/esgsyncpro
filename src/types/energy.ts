@@ -8,7 +8,7 @@ export interface EnergyData {
   savingsPercentage: number; // %
 }
 
-export interface EnergyDataCreate extends Omit<EnergyData, 'id' | 'savingsPercentage'> {}
+export type EnergyDataCreate = Omit<EnergyData, 'id' | 'savingsPercentage'>;
 
 export interface FilterOptions {
   dateFrom?: string;

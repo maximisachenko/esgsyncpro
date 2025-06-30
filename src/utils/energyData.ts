@@ -93,7 +93,7 @@ export const sortData = (data: EnergyData[], field: keyof EnergyData, direction:
   });
 };
 
-export const filterData = (data: EnergyData[], filters: any): EnergyData[] => {
+export const filterData = (data: EnergyData[], filters: Record<string, number>): EnergyData[] => {
   return data.filter(item => {
     if (filters.minConsumption && item.energyConsumption < filters.minConsumption) return false;
     if (filters.maxConsumption && item.energyConsumption > filters.maxConsumption) return false;
