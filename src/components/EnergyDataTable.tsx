@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Box,
   Button,
@@ -60,6 +61,21 @@ interface EnergyDataTableProps {
 }
 
 const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange }) => {
+  const t = useTranslations('table');
+  const tMonths = useTranslations('months');
+
+
+
+  // Function to translate month names
+  const translateMonth = (monthYear: string) => {
+    // Extract month name from "January 2024" format
+    const [monthName, year] = monthYear.split(' ');
+    const translatedMonth = tMonths(monthName as keyof typeof tMonths);
+    return `${translatedMonth} ${year}`;
+  };
+
+
+
   const [editingRows, setEditingRows] = useState<GridRowId[]>([]);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showExportDialog, setShowExportDialog] = useState(false);
@@ -182,11 +198,11 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
         [newRow.id.toString()]: newRow as EnergyData
       }));
 
-      setSnackbarMessage('Changes made (unsaved) - click "Save All Changes" to persist');
+      setSnackbarMessage(t('changesDetected'));
       setShowSnackbar(true);
       return newRow;
     },
-    [workingData]
+    [workingData, t]
   );
 
   const handleSaveAllChanges = () => {
@@ -308,7 +324,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
           height={12}
           bgcolor={isPositive ? 'success.main' : 'error.main'}
           borderRadius="50%"
-          title={isPositive ? 'Excellent savings!' : 'Needs improvement'}
+          title={isPositive ? t('excellentSavings') : t('needsImprovement')}
         />
         <Typography variant="body2" color={isPositive ? 'success.main' : 'error.main'}>
           {percentage > 0 ? '+' : ''}{percentage.toFixed(1)}%
@@ -355,14 +371,15 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
   const columns: GridColDef[] = [
     {
       field: 'date',
-      headerName: 'Date',
+      headerName: t('month'),
       width: 150,
       editable: true,
       renderEditCell: DateEditCell,
+      renderCell: ({ value }) => translateMonth(value as string),
     },
     {
       field: 'energyConsumption',
-      headerName: 'Energy Consumption (kWh)',
+      headerName: t('consumption'),
       width: 200,
       type: 'number',
       editable: true,
@@ -370,7 +387,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
     },
     {
       field: 'energyCost',
-      headerName: 'Energy Cost ($)',
+      headerName: t('cost'),
       width: 150,
       type: 'number',
       editable: true,
@@ -378,7 +395,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
     },
     {
       field: 'energySaved',
-      headerName: 'Energy Saved (kWh)',
+      headerName: t('saved'),
       width: 170,
       type: 'number',
       editable: true,
@@ -386,7 +403,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
     },
     {
       field: 'moneySaved',
-      headerName: 'Money Saved ($)',
+      headerName: t('moneySaved'),
       width: 150,
       type: 'number',
       editable: true,
@@ -394,7 +411,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
     },
     {
       field: 'savingsPercentage',
-      headerName: 'Savings vs Previous Month',
+      headerName: t('savingsPercentage'),
       width: 200,
       renderCell: ({ value }) => getSavingsIndicator(value as number),
       sortable: true,
@@ -402,7 +419,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
     {
       field: 'actions',
       type: 'actions',
-      headerName: 'Actions',
+      headerName: t('actions'),
       width: 100,
       cellClassName: 'actions',
       getActions: ({ id }) => {
@@ -413,13 +430,13 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
             <GridActionsCellItem
               key="save"
               icon={<SaveIcon />}
-              label="Save"
+              label={t('save')}
               onClick={handleSaveClick(id)}
             />,
             <GridActionsCellItem
               key="cancel"
               icon={<CancelIcon />}
-              label="Cancel"
+              label={t('cancel')}
               onClick={handleCancelClick(id)}
             />,
           ];
@@ -429,13 +446,13 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
           <GridActionsCellItem
             key="edit"
             icon={<EditIcon />}
-            label="Edit"
+            label={t('edit')}
             onClick={handleEditClick(id)}
           />,
           <GridActionsCellItem
             key="delete"
             icon={<DeleteIcon />}
-            label="Delete"
+            label={t('delete')}
             onClick={handleDeleteClick(id)}
           />,
         ];
@@ -443,7 +460,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
     },
   ];
 
-  const deleteRowData = workingData.find(row => row.id === deleteRowId);
+
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -451,7 +468,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
         <Paper sx={{ p: 2, mb: 2 }}>
           <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" mb={2}>
             <Typography variant="h4" component="h1">
-              Energy Consumption Dashboard
+              {t('title')}
             </Typography>
             <Stack direction="row" spacing={1}>
               <Button
@@ -459,7 +476,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                 startIcon={<AddIcon />}
                 onClick={() => setShowAddDialog(true)}
               >
-                Add Row
+                {t('addNewRecord')}
               </Button>
 
               {/* Save/Discard buttons */}
@@ -472,7 +489,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                       startIcon={<SaveAllIcon />}
                       onClick={handleSaveAllChanges}
                     >
-                      Save All Changes
+                      {t('saveAllChanges')}
                     </Button>
                   </Badge>
                   <Button
@@ -481,7 +498,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                     startIcon={<UndoIcon />}
                     onClick={handleDiscardAllChanges}
                   >
-                    Discard Changes
+                    {t('undoAllChanges')}
                   </Button>
                 </>
               )}
@@ -491,21 +508,21 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                 startIcon={<FilterIcon />}
                 onClick={() => setShowFilterDialog(true)}
               >
-                Filter
+                {t('filter')}
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<ExportIcon />}
                 onClick={() => setShowExportDialog(true)}
               >
-                Export
+                {t('export')}
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<ImportIcon />}
                 component="label"
               >
-                Import CSV
+                {t('import')} CSV
                 <input
                   type="file"
                   accept=".csv"
@@ -520,8 +537,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
           {hasUnsavedChanges && (
             <Alert severity="warning" sx={{ mb: 2 }}>
               <Typography variant="body2">
-                You have {Object.keys(unsavedChanges).length} unsaved change(s).
-                Don&apos;t forget to save your changes before leaving the page!
+                {t('unsavedChanges')}
               </Typography>
             </Alert>
           )}
@@ -560,11 +576,11 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
 
         {/* Add Row Dialog */}
         <Dialog open={showAddDialog} onClose={() => setShowAddDialog(false)} maxWidth="sm" fullWidth>
-          <DialogTitle>Add New Energy Data</DialogTitle>
+          <DialogTitle>{t('addNewRecord')}</DialogTitle>
           <DialogContent>
             <Stack spacing={2} sx={{ mt: 1 }}>
               <DatePicker
-                label="Date"
+                label={t('date')}
                 value={newRowDate}
                 onChange={(newValue) => setNewRowDate(newValue)}
                 views={['year', 'month']}
@@ -577,7 +593,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                 }}
               />
               <TextField
-                label="Energy Consumption (kWh)"
+                label={t('energyConsumptionKwh')}
                 type="number"
                 value={newRow.energyConsumption}
                 onChange={(e) => setNewRow({ ...newRow, energyConsumption: Number(e.target.value) })}
@@ -586,7 +602,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                 inputProps={{ min: 0 }}
               />
               <TextField
-                label="Energy Cost ($)"
+                label={t('energyCostDollar')}
                 type="number"
                 value={newRow.energyCost}
                 onChange={(e) => setNewRow({ ...newRow, energyCost: Number(e.target.value) })}
@@ -595,7 +611,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                 inputProps={{ min: 0, step: 0.01 }}
               />
               <TextField
-                label="Energy Saved (kWh)"
+                label={t('energySavedKwh')}
                 type="number"
                 value={newRow.energySaved}
                 onChange={(e) => setNewRow({ ...newRow, energySaved: Number(e.target.value) })}
@@ -603,7 +619,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                 inputProps={{ min: 0 }}
               />
               <TextField
-                label="Money Saved ($)"
+                label={t('moneySavedDollar')}
                 type="number"
                 value={newRow.moneySaved}
                 onChange={(e) => setNewRow({ ...newRow, moneySaved: Number(e.target.value) })}
@@ -613,8 +629,8 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setShowAddDialog(false)}>Cancel</Button>
-            <Button onClick={handleAddRow} variant="contained">Add</Button>
+            <Button onClick={() => setShowAddDialog(false)}>{t('cancel')}</Button>
+            <Button onClick={handleAddRow} variant="contained">{t('add')}</Button>
           </DialogActions>
         </Dialog>
 
@@ -627,48 +643,46 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
         >
           <DialogTitle id="delete-dialog-title" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <WarningIcon color="warning" />
-            Confirm Deletion
+            {t('confirmDelete')}
           </DialogTitle>
           <DialogContent>
             <Typography id="delete-dialog-description">
-              Are you sure you want to delete the energy record for{' '}
-              <strong>{deleteRowData?.date}</strong>?
+              {t('deleteWarning')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              This action cannot be undone. The record with {deleteRowData?.energyConsumption} kWh consumption
-              and ${deleteRowData?.energyCost} cost will be permanently removed.
+              {t('deleteNote')}
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleDeleteCancel}>Cancel</Button>
+            <Button onClick={handleDeleteCancel}>{t('cancel')}</Button>
             <Button onClick={handleDeleteConfirm} variant="contained" color="error">
-              Delete
+              {t('delete')}
             </Button>
           </DialogActions>
         </Dialog>
 
         {/* Export Dialog */}
         <Dialog open={showExportDialog} onClose={() => setShowExportDialog(false)}>
-          <DialogTitle>Export Energy Data</DialogTitle>
+          <DialogTitle>{t('exportData')}</DialogTitle>
           <DialogContent>
             <Typography variant="body2" sx={{ mb: 2 }}>
-              Export {filteredData.length} energy records in your preferred format:
+              {t('selectFormat')}
             </Typography>
             <Stack spacing={1}>
               <Button onClick={() => handleExport('csv')} fullWidth variant="outlined">
-                Export as CSV (Spreadsheet)
+                {t('csv')}
               </Button>
               <Button onClick={() => handleExport('excel')} fullWidth variant="outlined">
-                Export as Excel (XLSX)
+                {t('excel')}
               </Button>
               <Button onClick={() => handleExport('pdf')} fullWidth variant="outlined">
-                Export as PDF (Report)
+                {t('pdf')}
               </Button>
               <Button onClick={() => handleExport('json')} fullWidth variant="outlined">
-                Export as JSON (Data)
+                {t('json')}
               </Button>
               <Button onClick={() => handleExport('xml')} fullWidth variant="outlined">
-                Export as XML (Data)
+                {t('xml')}
               </Button>
             </Stack>
           </DialogContent>
@@ -676,14 +690,14 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
 
         {/* Filter Dialog */}
         <Dialog open={showFilterDialog} onClose={() => setShowFilterDialog(false)} maxWidth="sm" fullWidth>
-          <DialogTitle>Filter Energy Data</DialogTitle>
+          <DialogTitle>{t('filterData')}</DialogTitle>
           <DialogContent>
             <Typography variant="body2" sx={{ mb: 2 }}>
-              Filter energy records by consumption and cost ranges:
+              {t('filterDescription')}
             </Typography>
             <Stack spacing={2} sx={{ mt: 1 }}>
               <TextField
-                label="Min Consumption (kWh)"
+                label={t('minConsumption')}
                 type="number"
                 value={filters.minConsumption}
                 onChange={(e) => setFilters({ ...filters, minConsumption: e.target.value })}
@@ -691,7 +705,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                 inputProps={{ min: 0 }}
               />
               <TextField
-                label="Max Consumption (kWh)"
+                label={t('maxConsumption')}
                 type="number"
                 value={filters.maxConsumption}
                 onChange={(e) => setFilters({ ...filters, maxConsumption: e.target.value })}
@@ -699,7 +713,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                 inputProps={{ min: 0 }}
               />
               <TextField
-                label="Min Cost ($)"
+                label={t('minCost')}
                 type="number"
                 value={filters.minCost}
                 onChange={(e) => setFilters({ ...filters, minCost: e.target.value })}
@@ -707,7 +721,7 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
                 inputProps={{ min: 0, step: 0.01 }}
               />
               <TextField
-                label="Max Cost ($)"
+                label={t('maxCost')}
                 type="number"
                 value={filters.maxCost}
                 onChange={(e) => setFilters({ ...filters, maxCost: e.target.value })}
@@ -718,9 +732,9 @@ const EnergyDataTable: React.FC<EnergyDataTableProps> = ({ data, onDataChange })
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setFilters({ minConsumption: '', maxConsumption: '', minCost: '', maxCost: '' })}>
-              Clear Filters
+              {t('close')}
             </Button>
-            <Button onClick={() => setShowFilterDialog(false)} variant="contained">Apply</Button>
+            <Button onClick={() => setShowFilterDialog(false)} variant="contained">{t('apply')}</Button>
           </DialogActions>
         </Dialog>
 

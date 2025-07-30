@@ -1,0 +1,90 @@
+{
+  "header": {
+    "title": "Platforma Zarządzania Energią ESG",
+    "subtitle": "Monitoruj, analizuj i optymalizuj zużycie energii dla lepszej zrównoważoności"
+  },
+  "summaryCards": {
+    "totalConsumption": "Całkowite Zużycie",
+    "totalCost": "Całkowity Koszt",
+    "energySaved": "Energia Zaoszczędzona",
+    "moneySaved": "Pieniądze Zaoszczędzone",
+    "kwhLastMonths": "kWh (Ostatnie 12 miesięcy)",
+    "usdLastMonths": "USD (Ostatnie 12 miesięcy)",
+    "kwhSavedBaseline": "kWh zaoszczędzone vs bazowa",
+    "usdSavedBaseline": "USD zaoszczędzone vs bazowa"
+  },
+  "performance": {
+    "title": "Średnia Miesięczna Wydajność Oszczędności",
+    "averageSavings": "Średnie Oszczędności"
+  },
+  "footer": {
+    "copyright": "Platforma Zarządzania Energią ESG © 2024 | Zbudowana z Next.js i Material UI",
+    "description": "Pomagamy organizacjom osiągnąć cele zrównoważoności poprzez zarządzanie energią oparte na danych"
+  },
+  "language": {
+    "english": "Angielski",
+    "polish": "Polski"
+  },
+  "months": {
+    "January": "Styczeń",
+    "February": "Luty",
+    "March": "Marzec", 
+    "April": "Kwiecień",
+    "May": "Maj",
+    "June": "Czerwiec",
+    "July": "Lipiec",
+    "August": "Sierpień",
+    "September": "Wrzesień",
+    "October": "Październik",
+    "November": "Listopad",
+    "December": "Grudzień"
+  },
+  "table": {
+    "title": "Zarządzanie Danymi Energetycznymi",
+    "month": "Miesiąc",
+    "consumption": "Zużycie Energii (kWh)",
+    "cost": "Koszt Energii ($)",
+    "saved": "Energia Zaoszczędzona (kWh)",
+    "moneySaved": "Pieniądze Zaoszczędzone ($)",
+    "savingsPercentage": "Oszczędności %",
+    "actions": "Akcje",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "add": "Dodaj",
+    "export": "Eksportuj",
+    "import": "Importuj",
+    "filter": "Filtruj",
+    "saveAllChanges": "Zapisz Wszystkie Zmiany",
+    "undoAllChanges": "Cofnij Wszystkie Zmiany",
+    "addNewRecord": "Dodaj Nowy Rekord",
+    "date": "Data",
+    "energyConsumptionKwh": "Zużycie Energii (kWh)",
+    "energyCostDollar": "Koszt Energii ($)",
+    "energySavedKwh": "Energia Zaoszczędzona (kWh)",
+    "moneySavedDollar": "Pieniądze Zaoszczędzone ($)",
+    "confirmDelete": "Potwierdź Usunięcie",
+    "deleteWarning": "Czy na pewno chcesz usunąć ten rekord energetyczny?",
+    "deleteNote": "Ta akcja nie może zostać cofnięta.",
+    "exportData": "Eksportuj Dane",
+    "selectFormat": "Wybierz format, do którego chcesz wyeksportować dane:",
+    "csv": "CSV",
+    "excel": "Excel",
+    "pdf": "PDF",
+    "json": "JSON",
+    "xml": "XML",
+    "filterData": "Filtruj Dane",
+    "filterDescription": "Ustaw zakresy, aby filtrować dane energetyczne:",
+    "minConsumption": "Min. Zużycie (kWh)",
+    "maxConsumption": "Maks. Zużycie (kWh)",
+    "minCost": "Min. Koszt ($)",
+    "maxCost": "Maks. Koszt ($)",
+    "apply": "Zastosuj",
+    "close": "Zamknij",
+    "excellentSavings": "Doskonałe oszczędności!",
+    "needsImprovement": "Wymaga poprawy",
+    "unsavedChanges": "Masz niezapisane zmiany. Kliknij 'Zapisz Wszystkie Zmiany', aby je zachować.",
+    "changesDetected": "Wprowadzono zmiany (niezapisane) - kliknij \"Zapisz Wszystkie Zmiany\", aby je zachować"
+  }
+} 

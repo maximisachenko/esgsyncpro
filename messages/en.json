@@ -1,0 +1,90 @@
+{
+  "header": {
+    "title": "ESG Energy Management Platform",
+    "subtitle": "Monitor, analyze, and optimize your energy consumption for better sustainability"
+  },
+  "summaryCards": {
+    "totalConsumption": "Total Consumption",
+    "totalCost": "Total Cost",
+    "energySaved": "Energy Saved",
+    "moneySaved": "Money Saved",
+    "kwhLastMonths": "kWh (Last 12 months)",
+    "usdLastMonths": "USD (Last 12 months)",
+    "kwhSavedBaseline": "kWh saved vs baseline",
+    "usdSavedBaseline": "USD saved vs baseline"
+  },
+  "performance": {
+    "title": "Average Monthly Savings Performance",
+    "averageSavings": "Average Savings"
+  },
+  "footer": {
+    "copyright": "ESG Energy Management Platform © 2024 | Built with Next.js & Material UI",
+    "description": "Helping organizations achieve their sustainability goals through data-driven energy management"
+  },
+  "language": {
+    "english": "English",
+    "polish": "Polish"
+  },
+  "months": {
+    "January": "January",
+    "February": "February", 
+    "March": "March",
+    "April": "April",
+    "May": "May",
+    "June": "June",
+    "July": "July",
+    "August": "August",
+    "September": "September",
+    "October": "October",
+    "November": "November",
+    "December": "December"
+  },
+  "table": {
+    "title": "Energy Data Management",
+    "month": "Month",
+    "consumption": "Energy Consumption (kWh)",
+    "cost": "Energy Cost ($)",
+    "saved": "Energy Saved (kWh)",
+    "moneySaved": "Money Saved ($)",
+    "savingsPercentage": "Savings %",
+    "actions": "Actions",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "export": "Export",
+    "import": "Import",
+    "filter": "Filter",
+    "saveAllChanges": "Save All Changes",
+    "undoAllChanges": "Undo All Changes",
+    "addNewRecord": "Add New Record",
+    "date": "Date",
+    "energyConsumptionKwh": "Energy Consumption (kWh)",
+    "energyCostDollar": "Energy Cost ($)",
+    "energySavedKwh": "Energy Saved (kWh)",
+    "moneySavedDollar": "Money Saved ($)",
+    "confirmDelete": "Confirm Delete",
+    "deleteWarning": "Are you sure you want to delete this energy record?",
+    "deleteNote": "This action cannot be undone.",
+    "exportData": "Export Data",
+    "selectFormat": "Select the format you want to export the data to:",
+    "csv": "CSV",
+    "excel": "Excel",
+    "pdf": "PDF",
+    "json": "JSON",
+    "xml": "XML",
+    "filterData": "Filter Data",
+    "filterDescription": "Set ranges to filter the energy data:",
+    "minConsumption": "Min Consumption (kWh)",
+    "maxConsumption": "Max Consumption (kWh)",
+    "minCost": "Min Cost ($)",
+    "maxCost": "Max Cost ($)",
+    "apply": "Apply",
+    "close": "Close",
+    "excellentSavings": "Excellent savings!",
+    "needsImprovement": "Needs improvement",
+    "unsavedChanges": "You have unsaved changes. Click 'Save All Changes' to persist them.",
+    "changesDetected": "Changes made (unsaved) - click \"Save All Changes\" to persist"
+  }
+} 
